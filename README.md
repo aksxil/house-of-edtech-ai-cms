@@ -1,36 +1,212 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🎓 House of Edtech – AI-Powered Course Management System
 
-## Getting Started
+A full-stack, secure, and production-grade Instructor CMS built using Next.js 16, Prisma, PostgreSQL, shadcn/ui, and AI integration.
+This project demonstrates real-world full-stack engineering, not just basic CRUD.
 
-First, run the development server:
+📌 Project Overview
 
-```bash
+This application is designed for Instructors to:
+
+Create and manage courses
+
+Add and manage lessons
+
+Generate AI-powered lesson summaries
+
+Securely authenticate using cookie-based JWT
+
+Use a clean, modern, and accessible UI
+
+The system follows industry best practices for:
+
+Security
+
+Scalability
+
+Code quality
+
+Maintainability
+
+🧠 Key Highlights (Why This Project Stands Out)
+
+✅ Next.js 16 App Router (Server + Client Components)
+
+✅ Secure Authentication using HTTP-only JWT Cookies
+
+✅ Role-based Authorization (Instructor)
+
+✅ Full CRUD via UI (No Postman needed)
+
+✅ AI-Powered Lesson Summary with Fallback Logic
+
+✅ Prisma ORM + PostgreSQL
+
+✅ shadcn/ui + Tailwind CSS (Accessible & Responsive UI)
+
+✅ Production-grade folder structure
+
+✅ Global Navbar via App Router Layouts
+
+🧱 Tech Stack
+Frontend
+
+Next.js 16 (App Router)
+
+React.js
+
+Tailwind CSS
+
+shadcn/ui
+
+TypeScript
+
+Backend
+
+Next.js API Routes
+
+Prisma ORM
+
+PostgreSQL
+
+JWT (Cookie-based Auth)
+
+AI (Optional Add-on)
+
+AI summary generation with graceful fallback
+
+Designed to support OpenAI / Gemini / Groq
+
+📂 Folder Structure (Important)
+app/
+ ├── login/
+ ├── dashboard/
+ │   ├── page.tsx
+ │   ├── layout.tsx
+ │   └── courses/
+ │       ├── new/
+ │       └── [id]/
+ └── api/
+     ├── auth/
+     ├── courses/
+     └── lessons/
+components/
+ ├── Navbar.tsx
+ ├── CourseCard.tsx
+ ├── LessonCard.tsx
+ ├── CreateLessonForm.tsx
+ ├── AISummaryButton.tsx
+ └── LogoutButton.tsx
+lib/
+ ├── prisma.ts
+ ├── requireInstructor.ts
+ └── getUserFromToken.ts
+prisma/
+ └── schema.prisma
+
+🔐 Authentication & Authorization
+
+Uses JWT stored in HTTP-only cookies
+
+No tokens exposed to frontend
+
+Server-side validation on every protected route
+
+Instructor-only access enforced at API level
+
+⚙️ Environment Variables
+
+Create a .env file in the root:
+
+DATABASE_URL="postgresql://postgres:<password>@localhost:5432/edtech_ai"
+JWT_SECRET=supersecretkey
+
+🗄️ Database Setup (Prisma)
+Install dependencies
+npm install
+
+Generate Prisma Client
+npx prisma generate
+
+Push schema to database
+npx prisma db push
+
+
+⚠️ This project uses db push for local development simplicity.
+
+▶️ Run the Project Locally
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+http://localhost:3000/login
 
-## Learn More
+🧪 Demo Workflow (UI-Based)
 
-To learn more about Next.js, take a look at the following resources:
+Login as Instructor
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Redirected to /dashboard
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create a new course
 
-## Deploy on Vercel
+Open course details
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Add lessons
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Generate AI summaries
+
+Logout securely
+
+✔️ All actions are available via UI only (no Postman required)
+
+🤖 AI Summary Feature
+
+Generates concise lesson summaries
+
+If AI quota/model is unavailable → fallback summary
+
+AI mode clearly labeled in response
+
+Designed for extensibility with multiple providers
+
+🔒 Security Considerations
+
+HTTP-only cookies prevent XSS token theft
+
+Server-side validation for all mutations
+
+Role-based authorization enforced
+
+Clear separation of concerns
+
+🚀 Deployment
+
+This project is deployment-ready and optimized for platforms like:
+
+Vercel
+
+Netlify (API supported platforms)
+
+CI/CD can be easily added via GitHub Actions.
+
+📈 Real-World Scalability Notes
+
+Prisma supports connection pooling
+
+API routes are modular
+
+AI services are abstracted
+
+UI follows component-driven design
+
+Easy to add:
+
+Student roles
+
+Public course pages
+
+Analytics
+
+👤 Author
+
+Aakash Nishad
