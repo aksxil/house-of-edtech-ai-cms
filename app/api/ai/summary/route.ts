@@ -1,17 +1,39 @@
-import OpenAI from "openai";
 import { NextResponse } from "next/server";
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 export async function POST(req: Request) {
-  const { content } = await req.json();
+  const body = await req.json();
+  const { content } = body;
 
-  const completion = await client.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [{ role: "user", content: `Summarize this lesson:\n${content}` }],
+  // ✅ If no API key, fallback summary
+  if (!process.env.OPENAI_API_KEY) {
+    return NextResponse.json({
+      summary: content
+        .split(" ")
+        .slice(0, 40)
+        .join(" "),
+      aiMode: "fallback",
+    });
+  }
+
+  // 🔥 Import OpenAI ONLY if key exists
+  const OpenAI = (await import("openai")).default;
+
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: `Summarize this lesson:\n\n${content}`,
+      },
+    ],
   });
 
   return NextResponse.json({
-    summary: completion.choices[0].message.content,
+    summary: response.choices[0].message.content,
+    aiMode: "openai",
   });
 }
