@@ -1,13 +1,13 @@
 import { prisma } from "@/lib/prisma";
-import LessonCard from "@/components/LessonCard";
 import CreateLessonForm from "@/components/CreateLessonForm";
+import LessonCard from "@/components/LessonCard";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
 export default async function CoursePage({ params }: Props) {
-  const { id } = await params; // ✅ IMPORTANT FIX
+  const { id } = await params; // ✅ REQUIRED in Next 16
 
   const course = await prisma.course.findUnique({
     where: { id },

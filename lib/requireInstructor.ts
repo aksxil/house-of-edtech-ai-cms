@@ -1,10 +1,14 @@
 import { getUserFromToken } from "./getUserFromToken";
+import { NextResponse } from "next/server";
 
 export async function requireInstructor() {
   const user = await getUserFromToken();
 
   if (!user || user.role !== "INSTRUCTOR") {
-    throw new Error("Unauthorized: Instructor access required");
+    throw NextResponse.json(
+      { error: "Unauthorized: Instructor access required" },
+      { status: 401 }
+    );
   }
 
   return user;

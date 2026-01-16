@@ -2,15 +2,18 @@ import { prisma } from "@/lib/prisma";
 import { requireInstructor } from "@/lib/requireInstructor";
 import { NextResponse } from "next/server";
 
-type Params = Promise<{ id: string }>;
+/* ================= PARAM TYPES ================= */
+type RouteContext = {
+  params: Promise<{ id: string }>;
+};
 
 /* ================= UPDATE COURSE ================= */
 export async function PUT(
   req: Request,
-  context: { params: Params }
+  { params }: RouteContext
 ) {
   try {
-    const { id } = await context.params;
+    const { id } = await params;
     const instructor = await requireInstructor();
     const body = await req.json();
 
@@ -34,18 +37,21 @@ export async function PUT(
     });
 
     return NextResponse.json(updated);
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 401 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Unauthorized or invalid request" },
+      { status: 401 }
+    );
   }
 }
 
 /* ================= DELETE COURSE ================= */
 export async function DELETE(
-  req: Request,
-  context: { params: Params }
+  _req: Request,
+  { params }: RouteContext
 ) {
   try {
-    const { id } = await context.params;
+    const { id } = await params;
     const instructor = await requireInstructor();
 
     const course = await prisma.course.findUnique({
@@ -64,18 +70,21 @@ export async function DELETE(
     });
 
     return NextResponse.json({ success: true });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 401 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Unauthorized or invalid request" },
+      { status: 401 }
+    );
   }
 }
 
 /* ================= PUBLISH / UNPUBLISH ================= */
 export async function PATCH(
-  req: Request,
-  context: { params: Params }
+  _req: Request,
+  { params }: RouteContext
 ) {
   try {
-    const { id } = await context.params;
+    const { id } = await params;
     const instructor = await requireInstructor();
 
     const course = await prisma.course.findUnique({
@@ -97,7 +106,10 @@ export async function PATCH(
     });
 
     return NextResponse.json(updated);
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 401 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Unauthorized or invalid request" },
+      { status: 401 }
+    );
   }
 }

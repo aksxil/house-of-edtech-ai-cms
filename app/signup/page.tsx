@@ -3,36 +3,43 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Card,
   CardHeader,
-  CardContent,
   CardTitle,
+  CardContent,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setError("");
+    setLoading(true);
 
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
       credentials: "include",
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        role: "INSTRUCTOR", // 👈 default role
+      }),
     });
 
     if (!res.ok) {
-      setError("Invalid credentials");
+      const data = await res.json();
+      setError(data.error || "Signup failed");
       setLoading(false);
       return;
     }
@@ -46,15 +53,22 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-center text-xl">
-            Instructor Login
+            Instructor Signup
           </CardTitle>
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleSignup} className="space-y-4">
             {error && (
               <p className="text-red-500 text-sm">{error}</p>
             )}
+
+            <Input
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
 
             <Input
               type="email"
@@ -73,18 +87,17 @@ export default function LoginPage() {
             />
 
             <Button className="w-full" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Creating account..." : "Create Account"}
             </Button>
           </form>
 
-          {/* 👇 Signup link */}
           <p className="text-center text-sm text-muted-foreground mt-4">
-            Don’t have an account?{" "}
+            Already have an account?{" "}
             <Link
-              href="/signup"
-              className="text-primary underline underline-offset-4"
+              href="/login"
+              className="text-primary underline"
             >
-              Create one
+              Login
             </Link>
           </p>
         </CardContent>

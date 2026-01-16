@@ -1,14 +1,17 @@
+import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { verifyToken } from "./auth";
 
 export async function getUserFromToken() {
-  const cookieStore = await cookies();
+  const cookieStore = await cookies(); // ✅ REQUIRED
   const token = cookieStore.get("token")?.value;
 
   if (!token) return null;
 
   try {
-    return verifyToken(token);
+    return jwt.verify(token, process.env.JWT_SECRET!) as {
+      id: string;
+      role: string;
+    };
   } catch {
     return null;
   }
